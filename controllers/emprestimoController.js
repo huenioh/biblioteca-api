@@ -50,12 +50,49 @@ export const getEmprestimos = async (req, res) => {
   }
 };
 
+export const deleteEmprestimo = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const connection = await createConnection();
+
+    const [emprestimo] = await connection.execute(
+      "SELECT livro_id FROM emprestimos WHERE id = ?",
+      [id]
+    );
+
+    if (emprestimo.length === 0) {
+      return res.status(404).json({ error: "Empréstimo não encontrado" });
+    }
+
+    const livro_id = emprestimo[0].livro_id;
+
+    await connection.execute(
+      "UPDATE livros SET emprestado = 0 WHERE id = ?",
+      [livro_id]
+    );
+
+    const [result] = await connection.execute(
+      "DELETE FROM emprestimos WHERE id = ?",
+      [id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Empréstimo não encontrado" });
+    }
+
+    return res.status(200).json({ message: "Empréstimo deletado com sucesso e status do livro atualizado" });
+  } catch (error) {
+    return res.status(500).json({ error: "Erro ao deletar o empréstimo", details: error.message });
+  }
+};
+
+
 
 
 
 //await connection.query(`
 //  CREATE TABLE IF NOT EXISTS emprestimos (
-//  id INT AUTO_INCREMENT PRIMARY KEY,
+//    id INT AUTO_INCREMENT PRIMARY KEY,
 //    usuario_id INT,
 //    livro_id INT,
 //    data_emprestimo DATE,
