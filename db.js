@@ -18,13 +18,10 @@ async function createConnection() {
 
 async function initializeDatabase() {
   try {
-    // Cria a conexão
     const connection = await createConnection();
 
-    // Tenta estabelecer a conexão com o banco de dados
     console.log("Conexão com o MySQL estabelecida com sucesso.");
 
-    // Criação do banco de dados se não existir
     await connection.query(
       `CREATE DATABASE IF NOT EXISTS \`${process.env.DB_NAME}\`;`
     );
@@ -32,10 +29,8 @@ async function initializeDatabase() {
       `Banco de dados "${process.env.DB_NAME}" verificado/criado com sucesso`
     );
 
-    // Muda para o banco de dados criado
     await connection.changeUser({ database: process.env.DB_NAME });
 
-    // Criação das tabelas
     await connection.query(`
       CREATE TABLE IF NOT EXISTS livros (
         id INT AUTO_INCREMENT PRIMARY KEY,

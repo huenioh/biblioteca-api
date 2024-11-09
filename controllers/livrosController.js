@@ -1,10 +1,8 @@
 import { createConnection } from "../db.js";
 import livroSchema from "../validators/livrosValidator.js";
 
-// Adicionar novo Livro
 export const createLivro = async (req, res) => {
   try {
-    // Validação com Zod
     const parsedData = livroSchema.safeParse(req.body);
     if (!parsedData.success) {
       return res.status(400).json({ errors: parsedData.error.errors });
@@ -12,10 +10,8 @@ export const createLivro = async (req, res) => {
 
     const { titulo, autor, genero, ano_publicacao } = req.body;
 
-    // Obter a conexão com o banco de dados
     const connection = await createConnection();
 
-    // Adicionar um novo livro no banco
     const [result] = await connection.execute(
       "INSERT INTO livros (titulo, autor, genero, ano_publicacao) VALUES (?, ?, ?, ?)",
       [titulo, autor, genero, ano_publicacao]
@@ -62,12 +58,19 @@ export const getLivroByNome = async (req, res) => {
 
 // fazer o getLivroByGenero, getLivroByAno, getLivroByAutor
 
+//SELECT *
+//FROM livros
+//WHERE 
+//    LOWER(titulo) LIKE LOWER(CONCAT('%', ?, '%'))
+//    OR LOWER(autor) LIKE LOWER(CONCAT('%', ?, '%'))
+//    OR LOWER(genero) LIKE LOWER(CONCAT('%', ?, '%'))
+//    OR CAST(ano_publicacao AS CHAR) LIKE CONCAT('%', ?, '%');
+
 export const updateLivro = async (req, res) => {
   try {
     const { id } = req.params;
     const { titulo, autor, genero, ano_publicacao } = req.body;
 
-    // Validação dos dados com Zod
     const parsedData = livroSchema.safeParse(req.body);
     if (!parsedData.success) {
       return res.status(400).json({ errors: parsedData.error.errors });

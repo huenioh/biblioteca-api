@@ -1,10 +1,8 @@
 import { createConnection } from "../db.js";
 import usuarioSchema from "../validators/usuariosValidator.js";
 
-// Criar um novo usuário
 export const createUser = async (req, res) => {
   try {
-    // Validação com Zod
     const parsedData = usuarioSchema.safeParse(req.body);
     if (!parsedData.success) {
       return res.status(400).json({ errors: parsedData.error.errors });
@@ -12,10 +10,8 @@ export const createUser = async (req, res) => {
 
     const { nome, endereco, email, telefone } = req.body;
 
-    // Obter a conexão com o banco de dados
     const connection = await createConnection();
 
-    // Inserir o novo usuário no banco
     const [result] = await connection.execute(
       "INSERT INTO usuarios (nome, endereco, email, telefone) VALUES (?, ?, ?, ?)",
       [nome, endereco, email, telefone]
@@ -31,7 +27,6 @@ export const createUser = async (req, res) => {
   }
 };
 
-// Obter todos os usuários
 export const getUsers = async (req, res) => {
   try {
     const connection = await createConnection();
@@ -42,7 +37,6 @@ export const getUsers = async (req, res) => {
   }
 };
 
-// Obter um usuário pelo Email
 export const getUserByEmail = async (req, res) => {
   try {
     const { email } = req.params;
@@ -62,13 +56,11 @@ export const getUserByEmail = async (req, res) => {
   }
 };
 
-// Atualizar um usuário
 export const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
     const { nome, endereco, email, telefone } = req.body;
 
-    // Validação dos dados com Zod
     const parsedData = usuarioSchema.safeParse(req.body);
     if (!parsedData.success) {
       return res.status(400).json({ errors: parsedData.error.errors });
@@ -90,7 +82,6 @@ export const updateUser = async (req, res) => {
   }
 };
 
-// Deletar um usuário
 export const deleteUser = async (req, res) => {
   try {
     const { email } = req.params;

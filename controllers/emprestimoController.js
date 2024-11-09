@@ -6,4 +6,3 @@ export const getEmprestimos = (req, res) => {
   res.send("Lista de empréstimos");
 };
 
-// Outros métodos CRUD para empréstimos...
