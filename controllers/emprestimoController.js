@@ -50,6 +50,12 @@ export const getEmprestimos = async (req, res) => {
   }
 };
 
+export const updateEmprestimo = async (req, res) => {
+  res.send('updateEmprestimo');
+};
+
+
+
 export const deleteEmprestimo = async (req, res) => {
   try {
     const { id } = req.params;
