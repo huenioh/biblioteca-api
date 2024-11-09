@@ -46,6 +46,8 @@ async function initializeDatabase() {
       );
     `);
 
+    // Lembrar q o mysql year só aceita anos entre 1901 e 2155.
+
     await connection.query(`
       CREATE TABLE IF NOT EXISTS usuarios (
         id INT AUTO_INCREMENT PRIMARY KEY,
