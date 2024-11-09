@@ -91,20 +91,3 @@ export const deleteEmprestimo = async (req, res) => {
     return res.status(500).json({ error: "Erro ao deletar o empréstimo", details: error.message });
   }
 };
-
-
-
-
-
-//await connection.query(`
-//  CREATE TABLE IF NOT EXISTS emprestimos (
-//    id INT AUTO_INCREMENT PRIMARY KEY,
-//    usuario_id INT,
-//    livro_id INT,
-//    data_emprestimo DATE,
-//    data_devolucao DATE,
-//    devolvido BOOLEAN DEFAULT FALSE,
-//    FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
-//    FOREIGN KEY (livro_id) REFERENCES livros(id)
-//  );
-//`);
