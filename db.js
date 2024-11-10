@@ -38,6 +38,8 @@ async function initializeDatabase() {
         autor VARCHAR(255) NOT NULL,
         genero VARCHAR(100) NOT NULL,
         ano_publicacao YEAR NOT NULL,
+        estoque INT NOT NULL,
+        quantidade_emprestado INT DEFAULT 0,
         emprestado BOOLEAN DEFAULT FALSE
       );
     `);
@@ -50,7 +52,9 @@ async function initializeDatabase() {
         nome VARCHAR(255) NOT NULL,
         endereco VARCHAR(255) NOT NULL,
         email VARCHAR(255) NOT NULL,
-        telefone VARCHAR(15) NOT NULL
+        telefone VARCHAR(15) NOT NULL,
+        quantidade_emprestimos INT DEFAULT 0,
+        emprestimo_ativo BOOLEAN DEFAULT FALSE
       );
     `);
 
