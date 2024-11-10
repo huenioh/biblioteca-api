@@ -39,8 +39,8 @@ async function initializeDatabase() {
         genero VARCHAR(100) NOT NULL,
         ano_publicacao YEAR NOT NULL,
         estoque INT NOT NULL,
-        quantidade_emprestado INT DEFAULT 0,
-        emprestado BOOLEAN DEFAULT FALSE
+        vezes_emprestado INT DEFAULT 0,
+        emprestimos_ativos INT DEFAULT 0
       );
     `);
 
