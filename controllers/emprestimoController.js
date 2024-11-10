@@ -91,3 +91,35 @@ export const deleteEmprestimo = async (req, res) => {
     return res.status(500).json({ error: "Erro ao deletar o empréstimo", details: error.message });
   }
 };
+
+export const finalizarEmprestimo = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const connection = await createConnection();
+
+    const [emprestimo] = await connection.execute(
+      "SELECT livro_id FROM emprestimos WHERE id = ?",
+      [id]
+    );
+
+    if (emprestimo.length === 0) {
+      return res.status(404).json({ error: "Empréstimo não encontrado" });
+    }
+
+    const livro_id = emprestimo[0].livro_id;
+
+    await connection.execute(
+      "UPDATE emprestimos SET devolvido = true WHERE id = ?",
+      [id]
+    );
+
+    await connection.execute(
+      "UPDATE livros SET emprestado = 0 WHERE id = ?",
+      [livro_id]
+    );
+
+    return res.status(200).json({ message: "Empréstimo finalizado e status do livro atualizado com sucesso" });
+  } catch (error) {
+    return res.status(500).json({ error: "Erro ao finalizar o empréstimo", details: error.message });
+  }
+};
