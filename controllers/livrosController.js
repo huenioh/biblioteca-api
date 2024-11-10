@@ -50,21 +50,49 @@ export const getLivroByNome = async (req, res) => {
       return res.status(404).json({ error: "Livro não encontrado" });
     }
 
-    return res.status(200).json(rows[0]);
+    return res.status(200).json(rows);
   } catch (error) {
     return res.status(500).json({ error: "Erro ao buscar o Livro" });
   }
 };
 
-// fazer o getLivroByGenero, getLivroByAno, getLivroByAutor
+export const getLivroByAutor = async (req, res) => {
+  try {
+    const { autor } = req.params;
+    const connection = await createConnection();
+    const [rows] = await connection.execute(
+      "SELECT * FROM livros WHERE LOWER(autor) LIKE LOWER(CONCAT('%', ?, '%'))",
+      [autor]
+    );
 
-//SELECT *
-//FROM livros
-//WHERE 
-//    LOWER(titulo) LIKE LOWER(CONCAT('%', ?, '%'))
-//    OR LOWER(autor) LIKE LOWER(CONCAT('%', ?, '%'))
-//    OR LOWER(genero) LIKE LOWER(CONCAT('%', ?, '%'))
-//    OR CAST(ano_publicacao AS CHAR) LIKE CONCAT('%', ?, '%');
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Livro não encontrado" });
+    }
+
+    return res.status(200).json(rows);
+  } catch (error) {
+    return res.status(500).json({ error: "Erro ao buscar o Livro" });
+  }
+};
+
+export const getLivroByGenero = async (req, res) => {
+  try {
+    const { genero } = req.params;
+    const connection = await createConnection();
+    const [rows] = await connection.execute(
+      "SELECT * FROM livros WHERE LOWER(genero) LIKE LOWER(CONCAT('%', ?, '%'))",
+      [genero]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Livro não encontrado" });
+    }
+
+    return res.status(200).json(rows);
+  } catch (error) {
+    return res.status(500).json({ error: "Erro ao buscar o Livro" });
+  }
+};
 
 export const updateLivro = async (req, res) => {
   try {
@@ -94,11 +122,11 @@ export const updateLivro = async (req, res) => {
 
 export const deleteLivro = async (req, res) => {
   try {
-    const { titulo } = req.params;
+    const { id } = req.params;
     const connection = await createConnection();
     const [result] = await connection.execute(
-      "DELETE FROM livros WHERE titulo = ?",
-      [titulo]
+      "DELETE FROM livros WHERE id = ?",
+      [id]
     );
 
     if (result.affectedRows === 0) {
