@@ -21,5 +21,5 @@ app.use("/relatorios", relatorioRoutes);
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.DB_HOST || "localhost";
 app.listen(PORT, () => {
-  console.log(`Server running at http://${HOST}:${PORT}`);
+  console.log(`link: http://${HOST}:${PORT}`);
 });

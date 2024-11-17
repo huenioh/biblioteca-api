@@ -18,8 +18,8 @@ Este projeto é um sistema backend desenvolvido em Node.js com Express para gere
 
 Certifique-se de ter as seguintes ferramentas instaladas:
 
-- Node.js (versão >= 16)
-- MySQL (versão >= 8)
+- Node.js
+- MySQL
 - npm ou yarn
 
 ## Instalação
@@ -42,10 +42,10 @@ Certifique-se de ter as seguintes ferramentas instaladas:
    Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
 
    ```env
-   DB_HOST=seu-host
+   DB_HOST=localhost
    DB_USER=seu-usuario
    DB_PASSWORD=sua-senha
-   DB_DATABASE=seu-banco
+   DB_DATABASE=biblioteca_api
    PORT=3000
    ```
 
@@ -63,7 +63,7 @@ O servidor estará disponível em `http://localhost:3000`.
 
   - CRUD de usuários e livros
   - Controle de empréstimos e devoluções
-  - Geração de relatórios em PDF e Excel
+  - Geração de relatórios em Excel
 
 ## Estrutura do Projeto
 
