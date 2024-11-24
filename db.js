@@ -22,15 +22,18 @@ async function initializeDatabase() {
 
     console.log("Conexão com o MySQL estabelecida com sucesso.");
 
+    // Criação do banco de dados
     await connection.query(
-      `CREATE DATABASE IF NOT EXISTS \`${process.env.DB_NAME}\`;`
+      `CREATE DATABASE IF NOT EXISTS \`${process.env.DB_DATABASE}\`;`
     );
     console.log(
-      `Banco de dados "${process.env.DB_NAME}" verificado/criado com sucesso`
+      `Banco de dados "${process.env.DB_DATABASE}" verificado/criado com sucesso.`
     );
 
-    await connection.changeUser({ database: process.env.DB_NAME });
+    // Selecionar o banco de dados
+    await connection.changeUser({ database: process.env.DB_DATABASE });
 
+    // Criação das tabelas
     await connection.query(`
       CREATE TABLE IF NOT EXISTS livros (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -43,8 +46,6 @@ async function initializeDatabase() {
         emprestimos_ativos INT DEFAULT 0
       );
     `);
-
-    // Lembrar q o mysql year só aceita anos entre 1901 e 2155.
 
     await connection.query(`
       CREATE TABLE IF NOT EXISTS usuarios (
