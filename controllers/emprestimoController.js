@@ -75,9 +75,46 @@ export const getEmprestimos = async (req, res) => {
 };
 
 export const updateEmprestimo = async (req, res) => {
-  res.send('updateEmprestimo');
-};
+  try {
+    const { id } = req.params;
+    const { data_devolucao } = req.body;
+    const connection = await createConnection();
 
+    const [emprestimo] = await connection.execute(
+      "SELECT * FROM emprestimos WHERE id = ?",
+      [id]
+    );
+
+    if (emprestimo.length === 0) {
+      return res.status(404).json({ error: "Empréstimo não encontrado" });
+    }
+
+    const { devolvido } = emprestimo[0];
+
+    if (devolvido) {
+      return res.status(400).json({ error: "Empréstimo já finalizado" });
+    }
+
+    const [result] = await connection.execute(
+      "UPDATE emprestimos SET data_devolucao = ? WHERE id = ?",
+      [data_devolucao, id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Erro ao atualizar o empréstimo" });
+    }
+
+    return res.status(200).json({
+      message: "Empréstimo atualizado com sucesso",
+      id,
+      updatedFields: { data_devolucao },
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: "Erro ao atualizar o empréstimo", details: error.message });
+  }
+};
 
 
 export const deleteEmprestimo = async (req, res) => {
@@ -106,8 +143,7 @@ export const deleteEmprestimo = async (req, res) => {
 
     await connection.execute(
       `UPDATE usuarios 
-       SET emprestimo_ativo = 0, 
-           quantidade_emprestimos = quantidade_emprestimos - 1 
+       SET emprestimo_ativo = 0
        WHERE id = ?`,
       [usuario_id]
     );
